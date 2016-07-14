@@ -1,4 +1,8 @@
 # Differential Evolution
+
+Differential evolution (DE) is a high performance, easy to implement, and low complexity population-based
+optimization algorithms [1].
+
 ## Objective
 This repository provides Python implementation of Differential Evolution algorithm for global optimization in following schemes:
 
