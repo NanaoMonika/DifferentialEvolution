@@ -19,7 +19,7 @@ Basically you can use any objective funtions introduced by WCCI competitions or 
 
 ## Execution Instructions
 
-Exceution command template:
+Exceution command:
 
 python script_name.py F D MutatScale MutSchMode NP MutSchIndx
 
@@ -37,7 +37,10 @@ Example for EMDVM algorithm (mde.py) with N_{P}=6, D=100, ensemble ('population'
 
 python mde.py 10 100 'Vector' 'population' 6 'null'
 
-All the coes are executable on high performance computing systems such as Sharcnet.
+### Excecution on high performance computing systems:
+All the coes are executable on high performance computing systems such as Sharcnet. The shell script wrapper is provided in file batch_script_wrapper.sh
+
+
 If you found the codes useful, please cite corresponding papers suggested in the References section.
 
 ## References
