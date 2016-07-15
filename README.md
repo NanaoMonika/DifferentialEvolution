@@ -3,7 +3,6 @@
 Differential evolution (DE) is a high performance, easy to implement, and low complexity population-based
 optimization algorithms [1].
 
-## Objective
 This repository provides Python implementation of Differential Evolution algorithm for global optimization in following schemes:
 
 * Micro Differential Evolution [1]
@@ -19,7 +18,7 @@ Basically you can use any objective funtions introduced by WCCI competitions or 
 
 ## Execution Instructions
 
-Exceution command template:
+Exceution command:
 
 python script_name.py F D MutatScale MutSchMode NP MutSchIndx
 
@@ -29,14 +28,7 @@ where the options for keywords are:
 * F: integer function number
 * MutSchMode: mutation scheme mode ('static','population') 
 * MutatScale: mutation scale factor  ('Cte','Scalar','Vector')
-* MutSchIndx: mutation scheme index (0,1,2,3,4,'null')
-
-The mutation scheme index:
-- DE/rand/1: 0
-- DE/best/1: 1
-- DE/tbest/1: 2  
-- DE/rand/2: 3
-- DE/best/2: 4
+* MutSchIndx: mutation scheme index (DE/rand/1: 0; DE/best/1: 1; DE/tbest/1: 2; DE/rand/2: 3; DE/best/2: 4;'null')
 
 Note: if MutSchMod='population' then use MutSchIndx='null'; because 'population' stands for the ensemble mutation scheme mode, where the mutation scheme is selected randomly for each individual of popualtion from the above list [3].
 
@@ -44,7 +36,10 @@ Example for EMDVM algorithm (mde.py) with N_{P}=6, D=100, ensemble ('population'
 
 python mde.py 10 100 'Vector' 'population' 6 'null'
 
-All the coes are executable on high performance computing systems such as Sharcnet.
+### Excecution on high performance computing systems:
+All the coes are executable on high performance computing systems such as Sharcnet. The shell script wrapper is provided in file batch_script_wrapper.sh
+
+
 If you found the codes useful, please cite corresponding papers suggested in the References section.
 
 ## References
