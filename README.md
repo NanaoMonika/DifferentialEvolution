@@ -32,11 +32,11 @@ where the options for keywords are:
 * MutSchIndx: mutation scheme index (0,1,2,3,4,'null')
 
 The mutation scheme index:
-- DE/rand/1: 0
-- DE/best/1: 1
-- DE/tbest/1: 2  
-- DE/rand/2: 3
-- DE/best/2: 4
+  - DE/rand/1: 0
+  - DE/best/1: 1
+  - DE/tbest/1: 2  
+  - DE/rand/2: 3
+  - DE/best/2: 4
 
 Note: if MutSchMod='population' then use MutSchIndx='null'; because 'population' stands for the ensemble mutation scheme mode, where the mutation scheme is selected randomly for each individual of popualtion from the above list [3].
 
