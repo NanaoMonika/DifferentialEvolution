@@ -22,7 +22,7 @@ Basically you can use any objective funtions introduced by WCCI competitions or 
 Exceution command template:
 python script_name.py 
 where the options for keywords are:
-* NP: any integer number greater than 6
+* NP: population size (any integer number greater than 6)
 * D: any integer number greater than 2
 * F: integer function number
 * MutSchMode: string mutation scheme ('Cte','Scalar','Vector')
