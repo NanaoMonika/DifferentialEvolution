@@ -32,7 +32,7 @@ where the options for keywords are:
 * MutSchIndx: mutation scheme index (0,1,2,3,4,'null')
 
 The mutation scheme index:
-  - DE/rand/1: 0
+  -- DE/rand/1: 0
   - DE/best/1: 1
   - DE/tbest/1: 2  
   - DE/rand/2: 3
