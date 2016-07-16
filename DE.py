@@ -1,4 +1,3 @@
-## Author: Hojjat Salehinejad
 import time
 import sys
 import numpy as np
@@ -98,9 +97,10 @@ def CrossOver(_pop, v, cr, D, NP):
         I_rand = np.random.randint(D)
         for d in range(D):
 	    ran = random.random()
+	
             if ran <= cr or d == I_rand:
                 new_pop[ind_indx][d] = v[ind_indx][d]
-            elif ran > cr and d != I_rand:
+            elif ran > cr: #and d != I_rand:
                 new_pop[ind_indx][d] = _pop[ind_indx][d]
     return new_pop
 
@@ -120,7 +120,7 @@ def Selection(_pop, _New_U, _Cost_CU, _Cost_POP, _NP):
             _Cost_New_POP[pc] = _Cost_CU[pc]
     return _new_pop, _Cost_New_POP
 
-#python DE.py 1 10 'Cte'/'Vector' 'static'/'population' 30 0/null
+#python DE.py 1 10 'Cte' 'static' 30 0
 if __name__ == '__main__':
     script_name = os.path.basename(__file__)    
     for hojji in range(1,2):
@@ -140,7 +140,7 @@ if __name__ == '__main__':
         VTR = 1e-8  # Value to Reach
         N_Epoch = 1  # Number of Epochs
         NFC = 10000*D  # Number of Function Calls
-        LB = -100  #
+        LB = -100 #
         UB = 100  # Upper bound
         f = fgeneric.LoggingFunction('tmp').setfun(*bn.instantiate(FId))
         OGV = f.ftarget  # Optimal Global Value to Reach
@@ -194,10 +194,7 @@ if __name__ == '__main__':
                 U = CrossOver(POP, V, Cr, D, NP)
                 Cost_new_U = mp_handler(U, f)
 
-#		print Cost_new_U
-#		print np.asarray(Cost_POP)
-#		print '********'
-#		time.sleep(3)
+
                 New_POP, Cost_New_POP = Selection(POP, U, Cost_new_U, Cost_POP, NP)  # make POP
 
                 # Update
