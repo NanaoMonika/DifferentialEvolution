@@ -143,13 +143,13 @@ if __name__ == '__main__':
         FId = int(sys.argv[1])
         D = int(sys.argv[2])  # Number of Dimensions
         NP = int(sys.argv[5]) # 20  # Population Number
-        Cr = 0.1  # CrossOver Rate
+        Cr = 0.9  # CrossOver Rate
         VTR = 1e-8  # Value to Reach
-        N_Epoch = 1  # Number of Epochs
+        N_Epoch = 30  # Number of Epochs
         NFC_coeff = 100000
         NFC = NFC_coeff*D  # Number of Function Calls
-        LB = -5 #
-        UB = 5  # Upper bound
+        LB = -20 #
+        UB = 20  # Upper bound
         f_gen = fgeneric.LoggingFunction('tmp').setfun(*bn.instantiate(FId))
         OGV = f_gen.ftarget  # Optimal Global Value to Reach
         F_flag = sys.argv[3]  # "Vector"  # Cte, Scalar, Vector
