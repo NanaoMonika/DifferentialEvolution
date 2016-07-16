@@ -146,7 +146,8 @@ if __name__ == '__main__':
         Cr = 0.1  # CrossOver Rate
         VTR = 1e-8  # Value to Reach
         N_Epoch = 1  # Number of Epochs
-        NFC = 100000*D  # Number of Function Calls
+        NFC_coeff = 100000
+        NFC = NFC_coeff*D  # Number of Function Calls
         LB = -5 #
         UB = 5  # Upper bound
         f_gen = fgeneric.LoggingFunction('tmp').setfun(*bn.instantiate(FId))
@@ -199,9 +200,7 @@ if __name__ == '__main__':
                 Cost_new_U = mp_handler(U, f_gen)
 
                 New_POP, Cost_New_POP = Selection(POP, U, Cost_new_U, Cost_POP, NP)  # make POP
-                # print Cost_new_U
-                # print Cost_POP
-                # time.sleep(10)
+
                 # Update
                 POP = New_POP
                 Cost_POP = Cost_New_POP
@@ -253,7 +252,7 @@ if __name__ == '__main__':
                               All_Result_Std, All_Result_NFC]
 
             for name_id in range(len(name_saver)):
-                mypath = script_name[:-3] + '_Results/' + 'D' + str(D) + 'NP' + str(NP) + 'NFC' + str(NFC) + 'MF' + F_flag + '_MST' + ms_type + '_MSI' + str(ms_indx) + 'F' + str(FId)
+                mypath = script_name[:-3] + '_Results/' + 'D' + str(D) + 'NP' + str(NP) + 'NFC' + str(NFC_coeff) + 'MF' + F_flag + '_MST' + ms_type + '_MSI' + str(ms_indx) + 'F' + str(FId)
 
                 saver(mypath, name_saver_var[name_id], name_saver[name_id])
 
