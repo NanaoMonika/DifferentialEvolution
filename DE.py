@@ -71,38 +71,45 @@ def F_Generator(NP, D, F_flag):
     return F
 
 
-def Mutation(pop, _parents, fu, ms_mask, NP, D):
-    pb = _parents[5]
+def Mutation(_pop, _parents, fu, ms_mask, NP, D):
+
     p1 = _parents[0]
     p2 = _parents[1]
     p3 = _parents[2]
     p4 = _parents[3]
     p5 = _parents[4]
+    pb = _parents[5]
     p_avg_best = _parents[6]
 
-    V = np.zeros((NP, D))
+    v_in = np.zeros((NP, D))
     for p in range(NP):
-        pi = pop[p,:]
+        pi = _pop[p,:]
         for d in range(D):
-            V[p][d] = ms_mask[p][0]*p1[p][d] + ms_mask[p][1]*pb[d] + ms_mask[p][2]*fu[p][d]*(p2[p][d] - p3[p][d]) \
-                      + ms_mask[p][3]*fu[p][d]*(p1[p][d] - p2[p][d]) + ms_mask[p][4]*fu[p][d]*(p3[p][d] - p4[p][d]) \
-                      + ms_mask[p][5]*fu[p][d]*(p4[p][d] - p5[p][d]) + ms_mask[p][6]*pi[d] + \
-                      ms_mask[p][7]*fu[p][d]*(pb[d] - pi[d])
-    return V
+
+            v_in[p][d] = ms_mask[p][0]*p1[p][d] + ms_mask[p][1]*pb[d] + ms_mask[p][2]*fu[p][d]*(p2[p][d] - p3[p][d])\
+                         + ms_mask[p][3]*fu[p][d]*(p1[p][d] - p2[p][d])\
+                         + ms_mask[p][4]*fu[p][d]*(p3[p][d] - p4[p][d]) \
+                     + ms_mask[p][5]*fu[p][d]*(p4[p][d] - p5[p][d])\
+                         + ms_mask[p][6]*pi[d]\
+                         + ms_mask[p][7]*fu[p][d]*(pb[d] - pi[d])
+
+    return v_in
 
 
 def CrossOver(_pop, v, cr, D, NP):
-    new_pop = np.zeros((NP, D))
+    cross_pop = np.zeros((NP,D))
     for ind_indx in range(NP):
         I_rand = np.random.randint(D)
         for d in range(D):
-	    ran = random.random()
-	
-            if ran <= cr or d == I_rand:
-                new_pop[ind_indx][d] = v[ind_indx][d]
-            elif ran > cr: #and d != I_rand:
-                new_pop[ind_indx][d] = _pop[ind_indx][d]
-    return new_pop
+
+            rann = random.random()
+
+            if rann <= cr or d == I_rand:
+                cross_pop[ind_indx][d] = v[ind_indx][d]
+            elif rann > cr and d != I_rand:
+                cross_pop[ind_indx][d] = _pop[ind_indx][d]
+
+    return cross_pop
 
 
 def mp_handler(_pop, _f):
@@ -136,18 +143,18 @@ if __name__ == '__main__':
         FId = int(sys.argv[1])
         D = int(sys.argv[2])  # Number of Dimensions
         NP = int(sys.argv[5]) # 20  # Population Number
-        Cr = 0.9  # CrossOver Rate
+        Cr = 0.1  # CrossOver Rate
         VTR = 1e-8  # Value to Reach
         N_Epoch = 1  # Number of Epochs
-        NFC = 10000*D  # Number of Function Calls
-        LB = -100 #
-        UB = 100  # Upper bound
-        f = fgeneric.LoggingFunction('tmp').setfun(*bn.instantiate(FId))
-        OGV = f.ftarget  # Optimal Global Value to Reach
-        F_flag = sys.argv[3] #  "Vector"  # Cte, Scalar, Vector
-        ms_type = sys.argv[4]  #'population'  # population  static individual
+        NFC = 100000*D  # Number of Function Calls
+        LB = -5 #
+        UB = 5  # Upper bound
+        f_gen = fgeneric.LoggingFunction('tmp').setfun(*bn.instantiate(FId))
+        OGV = f_gen.ftarget  # Optimal Global Value to Reach
+        F_flag = sys.argv[3]  # "Vector"  # Cte, Scalar, Vector
+        ms_type = sys.argv[4]  # 'population'  # population  static individual
         ms_list = ['rand1', 'best1', 'tbest1', 'best2', 'rand2']
-	ms_indx = sys.argv[6]  # index of mutation scheme 
+        ms_indx = sys.argv[6]  # index of mutation scheme
         if ms_indx == 'null':
             ms_indx = 'null'
         else:
@@ -157,25 +164,22 @@ if __name__ == '__main__':
         mut_scheme_mask = mutation_scheme_maker(ms_type, ms_list, NP, ms_indx)
 
         for epoch in range(1, N_Epoch+1):
-            #start_t = time.time()
-            
             gc = 1
             FC_C = 0  # function call counter
             FC_C_list = []
             POP = LB*np.ones((NP, D)) + np.random.rand(NP, D)*(UB*np.ones((NP, D))-(LB*np.ones((NP, D))))
-            POP_Input = POP
-            Cost_POP = mp_handler(POP_Input, f)
+            Cost_POP = mp_handler(POP, f_gen)
 
-
-            ##Collect Results
+            # Collect Results
             Result_Avg = []
             Result_BSF = []
             Result_POP = []
             Result_Std = []
             Result_Err = []
-	    BSF = min(Cost_POP)  # Best So Far
+
+            BSF = min(Cost_POP)  # Best So Far
             Result_Avg.append(np.mean(Cost_POP))
-            Result_BSF.append(min(Cost_POP))
+            Result_BSF.append(BSF)
             min_index = np.argmin(Cost_POP)
             Result_POP.append(POP[min_index, ])
             Result_Std.append(np.std(Cost_POP))
@@ -186,17 +190,18 @@ if __name__ == '__main__':
             
             while (abs(BSF - OGV) > VTR) & (FC_C <= NFC):
                 F = F_Generator(NP, D, F_flag)
-		
+
                 parents = Parent_Selection(NP, POP, Cost_POP)
 
                 V = Mutation(POP, parents, F, mut_scheme_mask, NP, D)
 
                 U = CrossOver(POP, V, Cr, D, NP)
-                Cost_new_U = mp_handler(U, f)
-
+                Cost_new_U = mp_handler(U, f_gen)
 
                 New_POP, Cost_New_POP = Selection(POP, U, Cost_new_U, Cost_POP, NP)  # make POP
-
+                # print Cost_new_U
+                # print Cost_POP
+                # time.sleep(10)
                 # Update
                 POP = New_POP
                 Cost_POP = Cost_New_POP
@@ -207,17 +212,14 @@ if __name__ == '__main__':
                 Result_BSF.append(BSF)
                 Index = list(Cost_POP).index(BSF)
 
-
                 Result_POP.append(POP[Index, ])
                 Result_Std.append(np.std(Cost_POP))
                 Result_Err.append(abs(BSF-OGV))
 
-        
-                if gc%50 == 0:
+                if gc%10 == 0:
                     print '++++++++++++++++++'
                     print abs(BSF - OGV)
                     print 'Fid is:', FId
-
                     print 'epoch is:', epoch
                 gc = gc + 1
                 FC_C = FC_C + D*NP
