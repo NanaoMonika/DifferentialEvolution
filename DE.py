@@ -5,7 +5,7 @@ import random
 import fgeneric
 import bbobbenchmarks as bn
 import os
-
+import logging
 
 def saver(path_to_savein, data_to_save, name_file):
     if not os.path.exists(path_to_savein):
@@ -127,7 +127,7 @@ def Selection(_pop, _New_U, _Cost_CU, _Cost_POP, _NP):
             _Cost_New_POP[pc] = _Cost_CU[pc]
     return _new_pop, _Cost_New_POP
 
-#python DE.py 1 10 'Cte' 'static' 30 0
+#python DE.py 1 10 'Cte' 'static' 30 0 100
 if __name__ == '__main__':
     script_name = os.path.basename(__file__)    
     for hojji in range(1,2):
@@ -142,20 +142,28 @@ if __name__ == '__main__':
 
         FId = int(sys.argv[1])
         D = int(sys.argv[2])  # Number of Dimensions
-        NP = int(sys.argv[5]) # 20  # Population Number
-        Cr = 0.9  # CrossOver Rate
-        VTR = 1e-8  # Value to Reach
-        N_Epoch = 30  # Number of Epochs
-        NFC_coeff = 100000
-        NFC = NFC_coeff*D  # Number of Function Calls
-        LB = -20 #
-        UB = 20  # Upper bound
-        f_gen = fgeneric.LoggingFunction('tmp').setfun(*bn.instantiate(FId))
-        OGV = f_gen.ftarget  # Optimal Global Value to Reach
         F_flag = sys.argv[3]  # "Vector"  # Cte, Scalar, Vector
         ms_type = sys.argv[4]  # 'population'  # population  static individual
-        ms_list = ['rand1', 'best1', 'tbest1', 'best2', 'rand2']
+        NP = int(sys.argv[5]) # 20  # Population Number
         ms_indx = sys.argv[6]  # index of mutation scheme
+        Bound = int(sys.argv[7])
+        Cr = 0.5  # CrossOver Rate
+        VTR = 1e-8  # Value to Reach
+        N_Epoch = 30 # Number of Epochs
+        NFC = 10000*D  # Number of Function Calls
+        LB = -Bound  #
+        UB = Bound  # Upper bound
+        f_gen = fgeneric.LoggingFunction('tmp').setfun(*bn.instantiate(FId))
+        OGV = f_gen.ftarget  # Optimal Global Value to Reach
+        readme_log = 'D:' + str(D) + ' NP:' + str(NP) + ' NFC:' + str(NFC) + \
+                     ' MF:' + F_flag + ' MST:' + ms_type + ' MSI:' + str(ms_indx) + \
+                     ' Limit:' + str(Bound) + 'N_Epoch:' + str(N_Epoch) + ' Cr:' + str(Cr) + ' VTR:' + str(VTR)
+
+        logging.basicConfig(filename=script_name[:-3]+'.log', level=logging.INFO)
+        logging.info(readme_log)
+
+        ms_list = ['rand1', 'best1', 'tbest1', 'best2', 'rand2']
+
         if ms_indx == 'null':
             ms_indx = 'null'
         else:
@@ -200,7 +208,9 @@ if __name__ == '__main__':
                 Cost_new_U = mp_handler(U, f_gen)
 
                 New_POP, Cost_New_POP = Selection(POP, U, Cost_new_U, Cost_POP, NP)  # make POP
-
+                # print Cost_new_U
+                # print Cost_POP
+                # time.sleep(10)
                 # Update
                 POP = New_POP
                 Cost_POP = Cost_New_POP
@@ -252,7 +262,7 @@ if __name__ == '__main__':
                               All_Result_Std, All_Result_NFC]
 
             for name_id in range(len(name_saver)):
-                mypath = script_name[:-3] + '_Results/' + 'D' + str(D) + 'NP' + str(NP) + 'NFC' + str(NFC_coeff) + 'MF' + F_flag + '_MST' + ms_type + '_MSI' + str(ms_indx) + 'F' + str(FId)
+                mypath = script_name[:-3] + '_Results/' + 'D' + str(D) + 'NP' + str(NP) + 'NFC' + str(NFC) + 'MF' + F_flag + '_MST' + ms_type + '_MSI' + str(ms_indx) + 'F' + str(FId)
 
                 saver(mypath, name_saver_var[name_id], name_saver[name_id])
 
