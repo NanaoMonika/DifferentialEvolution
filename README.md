@@ -5,43 +5,44 @@ optimization algorithms [1].
 
 This repository provides Python implementation of Differential Evolution algorithm for global optimization in following schemes:
 
-* Micro Differential Evolution [1]
-* Micro Differential Evolution with Scalar Random Mutation Factor (MDESM) [1]
-* Micro Differential Evolution with Vectorized Random Mutation Factor (MDEVM) [1]
-* Ensemble Differential Evolution
-* Ensemble Micro-Differential Evolution (EMDE)
-* Opposition-based Differential Evolution (ODE) [2]
-* Ensemble Opposition-based Differential Evolution
+* Micro Differential Evolution (DE.py) [1]
+* Micro Differential Evolution with Scalar Random Mutation Factor (MDESM) (DE.py) [1]
+* Micro Differential Evolution with Vectorized Random Mutation Factor (MDEVM) (DE.py) [1]
+* Ensemble Differential Evolution (DE.py) [3]
+* Ensemble Micro-Differential Evolution (EMDE) (DE.py) [3]
+* Opposition-based Differential Evolution (ODE) (ODE.py) [2]
+* Ensemble Opposition-based Differential Evolution (ODE.py) []
+* Center-basis Differential Evolution (CDE.py) []
 
 ## Objective Functions
-Basically you can use any objective funtions introduced by WCCI competitions or write your own objective functions. For demonstration purpose, I am using the Black-Box-Optimization-Benchmarking (BBOB), consisted of 24 benchmark functions [4].
-
+Basically you can use any objective funtion or write your own objective functions. For demonstration purpose, I am using the Black-Box-Optimization-Benchmarking (BBOB), consisted of 24 benchmark functions [4].
+If need help in using other objective functions, just post an issue 
 ## Execution Instructions
 
 Exceution command:
 
-python script_name.py F D MutatScale MutSchMode NP MutSchIndx
+python DE.py F D MutatScale MutSchMode NP MutSchIndx
 
 where the options for keywords are:
-* NP: population size (any integer number greater than 6)
+* NP: population size (any integer number greater than 6; For micro version NP=6 is recommended [1])
 * D: any integer number greater than 2
 * F: integer function number
-* MutSchMode: mutation scheme mode ('static','population') 
-* MutatScale: mutation scale factor  ('Cte','Scalar','Vector')
-* MutSchIndx: mutation scheme index (DE/rand/1:0; DE/best/1:1; DE/tbest/1:2; DE/rand/2:3; DE/best/2:4; Ensemble(none):'null')
+* MutSchMode: mutation scheme mode (For Single Mutation Scheme: 'static', For Ensemble Mutation Scheme: 'population') 
+* MutatScale: mutation scale factor  (For F=0.5: 'Cte', For MDESM: 'Scalar', For MDEVM: 'Vector')
+* MutSchIndx: mutation scheme index (For DE/rand/1:0; For DE/best/1:1; For DE/tbest/1:2; For DE/rand/2:3; For DE/best/2:4; For Ensemble:'null')
 
 Note: if MutSchMod='population' then use MutSchIndx='null'; because 'population' stands for the ensemble mutation scheme mode, where the mutation scheme is selected randomly for each individual of popualtion from the above list [3].
 
 ### Example
-For example if we would run EMDVM (mde.py) with N_{P}=6, D=100, ensemble ('population') mutatio scheme mode, 'Vector' mutation scale factor and 'null' mutation scheme index the execution command will be:
+For example if we would run EMDVM (DE.py) with N_{P}=6, D=100, ensemble ('population') mutatio scheme mode, 'Vector' mutation scale factor and 'null' mutation scheme index the execution command will be:
 
-python mde.py 10 100 'Vector' 'population' 6 'null'
+python DE.py 10 100 'Vector' 'population' 6 'null'
 
 ### Excecution on high performance computing systems:
-All the coes are executable on high performance computing systems such as Sharcnet. The shell script wrapper is provided in file batch_script_wrapper.sh
+All the coes are executable on high performance computing systems such as Sharcnet. The shell script wrapper is provided in file wrapper.sh
 
 ### Note
-If you found the codes useful, please cite corresponding papers suggested in the References section.
+If you found the codes useful, please cite the paeprs in the References section.
 
 ## References
 
@@ -56,5 +57,9 @@ Link: http://rahnamayan.ca/assets/documents/Type-II%20Opposition-Based%20Differe
 
 [3] Salehinejad, H., Rahnamayan, S., and Tizhoosh, H.R., 2016, Exploration Enhancement in Ensemble Micro-Differential Evolution. In 2016 IEEE Congress on Evolutionary Computation (CEC). IEEE.
 
-[4] http://coco.gforge.inria.fr/
+[4] ODE paper
+
+[5] center basis paper
+
+[6] http://coco.gforge.inria.fr/
 
