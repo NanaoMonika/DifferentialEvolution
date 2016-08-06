@@ -12,7 +12,7 @@ This repository provides Python implementation of Differential Evolution algorit
 * Ensemble Micro-Differential Evolution (EMDE) (DE.py) [3]
 * Opposition-based Differential Evolution (ODE) (ODE.py) [2]
 * Ensemble Opposition-based Differential Evolution (ODE.py) []
-* Center-basis Differential Evolution (CDE.py) []
+* Center-basis Differential Evolution (CenDE.py) []
 
 ## Objective Functions
 Basically you can use any objective funtion or write your own objective functions. For demonstration purpose, I am using the Black-Box-Optimization-Benchmarking (BBOB), consisted of 24 benchmark functions [4].
