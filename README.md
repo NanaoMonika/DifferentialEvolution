@@ -42,7 +42,7 @@ python DE.py 10 100 'Vector' 'population' 6 'null'
 All the coes are executable on high performance computing systems such as Sharcnet. The shell script wrapper is provided in file wrapper.sh
 
 ### Note
-If you found the codes useful, please cite the paeprs in the References section.
+If you find this page and codes useful, please cite the paeprs in the References section.
 
 ## References
 
