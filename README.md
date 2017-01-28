@@ -63,3 +63,5 @@ Link: http://rahnamayan.ca/assets/documents/Type-II%20Opposition-Based%20Differe
 
 [6] http://coco.gforge.inria.fr/
 
+[7] H Salehinejad, S Rahnamayan, HR Tizhoosh, "Micro-differential evolution: Diversity enhancement and a comparative study," Applied Soft Computing, vol. 52, pp. 812 - 833, 2017.
+
